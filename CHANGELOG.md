@@ -1,4 +1,4 @@
-## v0.1.1 (Unreleased)
+## v0.1.1 (2021-10-03)
 
 ### Enhancements
 
