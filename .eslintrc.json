@@ -1,16 +1,10 @@
 {
 	"root": true,
-	"extends": ["eslint:recommended", "plugin:prettier/recommended"],
-	"parserOptions": {
-		"ecmaVersion": 2020,
-		"sourceType": "module"
-	},
+	"extends": ["@aduth/eslint-config"],
 	"env": {
-		"es6": true,
-		"node": true,
-		"mocha": true
+		"node": true
 	},
-	"rules": {
-		"prettier/prettier": "error"
+	"parserOptions": {
+		"sourceType": "module"
 	}
 }
