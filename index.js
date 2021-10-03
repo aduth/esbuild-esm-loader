@@ -1,13 +1,16 @@
+import { extname } from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
 import esbuild from 'esbuild';
+import { getFilePath } from 'resolve-file-extension';
 
 /** @typedef {'js'|'jsx'|'ts'|'tsx'} SupportedLoader */
 
 /**
  * Pattern matching URLs subject to ESBuild transform.
  *
- * @type {RegExp}
+ * @type {string[]}
  */
-const TRANSFORMED_EXTENSIONS = /\.([jt]sx?)$/;
+const TRANSFORMED_EXTENSIONS = ['.js', '.ts', '.jsx', '.tsx'];
 
 /**
  * Pattern matching URLs that should be ignored.
@@ -17,15 +20,30 @@ const TRANSFORMED_EXTENSIONS = /\.([jt]sx?)$/;
 const IGNORED_PATH = /node_modules/;
 
 /**
+ * Returns true if the given specifier is for a relative file, or false otherwise.
+ *
+ * @param {string} specifier Specifier to check.
+ *
+ * @return {boolean} Whether specifier is for a relative file.
+ */
+const isRelative = (specifier) => specifier[0] === '.';
+
+/**
  * Returns true if the given URL should be subject to ESBuild transform, or
  * false otherwise.
  *
- * @param {string} url URL to test.
+ * @param {string} specifier URL to test.
  *
  * @return {boolean} Whether to transform.
  */
-const isTransformed = (url) =>
-	TRANSFORMED_EXTENSIONS.test(url) && !IGNORED_PATH.test(url);
+function isTransformed(specifier) {
+	if (IGNORED_PATH.test(specifier)) {
+		return false;
+	}
+
+	const ext = extname(specifier);
+	return ext ? TRANSFORMED_EXTENSIONS.includes(ext) : isRelative(specifier);
+}
 
 /**
  * Returns the ESBuild loader corresponding to the given URL.
@@ -35,7 +53,7 @@ const isTransformed = (url) =>
  * @return {esbuild.Loader=} Loader to use.
  */
 export const getLoader = (url) =>
-	/** @type {SupportedLoader} */ (url.match(TRANSFORMED_EXTENSIONS)?.[1]);
+	/** @type {SupportedLoader} */ (extname(url).slice(1));
 
 /**
  * @param {string} specifier
@@ -44,10 +62,25 @@ export const getLoader = (url) =>
  *
  * @return {Promise<{url: string}>}
  */
-export const resolve = (specifier, context, defaultResolve) =>
-	isTransformed(specifier)
-		? Promise.resolve({ url: new URL(specifier, context.parentURL).href })
-		: defaultResolve(specifier, context, defaultResolve);
+export async function resolve(specifier, context, defaultResolve) {
+	if (isTransformed(specifier)) {
+		let url = new URL(specifier, context.parentURL);
+		if (!extname(specifier)) {
+			const resolvedFile = await getFilePath(
+				fileURLToPath(url),
+				TRANSFORMED_EXTENSIONS
+			);
+
+			if (resolvedFile) {
+				url = pathToFileURL(resolvedFile);
+			}
+		}
+
+		return { url: url.href };
+	}
+
+	return defaultResolve(specifier, context, defaultResolve);
+}
 
 /**
  * @param {string} url
@@ -71,7 +104,7 @@ export const getFormat = (url, context, defaultGetFormat) =>
 export async function transformSource(source, context, defaultTransformSource) {
 	const { url } = context;
 
-	if (!IGNORED_PATH.test(url)) {
+	if (isTransformed(url)) {
 		const loader = getLoader(url);
 		if (loader) {
 			const { code } = await esbuild.transform(source.toString(), { loader });

@@ -3,13 +3,7 @@ import { expect } from 'chai';
 import { getLoader, resolve, getFormat, transformSource } from './index.js';
 
 describe('getLoader', () => {
-	it('returns undefined for unknown extension', () => {
-		const result = getLoader('file:///foo/bar.exe');
-
-		expect(result).to.be.undefined;
-	});
-
-	it('returns loader for known extension', () => {
+	it('returns loader', () => {
 		const result = getLoader('file:///foo/bar.tsx');
 
 		expect(result).to.equal('tsx');
@@ -22,6 +16,18 @@ describe('resolve', () => {
 
 	it('resolves url for supported file', async () => {
 		const specifier = './fixtures/in.jsx';
+		const context = { conditions: [], parentURL: import.meta.url };
+		const expected = {
+			url: new URL('./fixtures/in.jsx', import.meta.url).toString(),
+		};
+
+		const actual = await resolve(specifier, context, DEFAULT_RESOLVE);
+
+		expect(actual).to.deep.equal(expected);
+	});
+
+	it('resolves url for extensionless file', async () => {
+		const specifier = './fixtures/in';
 		const context = { conditions: [], parentURL: import.meta.url };
 		const expected = {
 			url: new URL('./fixtures/in.jsx', import.meta.url).toString(),
