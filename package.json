@@ -8,7 +8,7 @@
 	"scripts": {
 		"test": "run-p test:*",
 		"test:loader": "node --experimental-loader=./index.js fixtures/extensionless/entry.js",
-		"test:lint": "eslint index.js",
+		"test:lint": "eslint *.js",
 		"test:types": "tsc",
 		"test:unit": "mocha *.test.js"
 	},

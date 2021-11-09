@@ -2,7 +2,8 @@
 	"root": true,
 	"extends": ["@aduth/eslint-config"],
 	"env": {
-		"node": true
+		"node": true,
+		"mocha": true
 	},
 	"parserOptions": {
 		"sourceType": "module"
