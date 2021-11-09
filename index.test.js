@@ -1,6 +1,6 @@
 import { readFile } from 'fs/promises';
 import { expect } from 'chai';
-import { getLoader, resolve, getFormat, transformSource } from './index.js';
+import { getLoader, resolve, load } from './index.js';
 
 describe('getLoader', () => {
 	it('returns loader', () => {
@@ -59,28 +59,32 @@ describe('resolve', () => {
 	});
 });
 
-describe('getFormat', () => {
-	const DEFAULT_FORMAT = { url: '' };
-	const DEFAULT_GET_FORMAT = () => Promise.resolve(DEFAULT_FORMAT);
+describe('load', () => {
+	const DEFAULT_LOAD = (url) => Promise.resolve({ source: url });
 
-	it('returns module format for supported file', async () => {
+	it('transforms source for supported file', async () => {
 		const url = new URL('./fixtures/in.jsx', import.meta.url).toString();
-		const context = {};
-		const expected = { format: 'module' };
+		const expected = {
+			source: await readFile('./fixtures/out.js', 'utf-8'),
+			format: 'module',
+		};
+		const context = { format: 'module' };
 
-		const actual = await getFormat(url, context, DEFAULT_GET_FORMAT);
+		const actual = await load(url, context, DEFAULT_LOAD);
 
 		expect(actual).to.deep.equal(expected);
 	});
 
 	it('defers for unsupported file', async () => {
-		const url = new URL('./fixtures/in.txt', import.meta.url).toString();
-		const context = {};
-		const expected = DEFAULT_FORMAT;
+		const url = new URL('example.txt', import.meta.url).toString();
+		const context = {
+			format: 'module',
+		};
+		const expected = url;
 
-		const actual = await getFormat(url, context, DEFAULT_GET_FORMAT);
+		const { source: actual } = await load(url, context, DEFAULT_LOAD);
 
-		expect(actual).to.deep.equal(expected);
+		expect(actual).to.equal(expected);
 	});
 
 	it('defers for ignored file', async () => {
@@ -88,66 +92,12 @@ describe('getFormat', () => {
 			'./node_modules/@aduth/fixtures/in.jsx',
 			import.meta.url
 		).toString();
-		const context = {};
-		const expected = DEFAULT_FORMAT;
-
-		const actual = await getFormat(url, context, DEFAULT_GET_FORMAT);
-
-		expect(actual).to.deep.equal(expected);
-	});
-});
-
-describe('transformSource', () => {
-	const DEFAULT_TRANSFORM_SOURCE = (source) => Promise.resolve({ source });
-
-	it('transforms source for supported file', async () => {
-		const url = new URL('./fixtures/in.jsx', import.meta.url);
-		const source = await readFile(url);
-		const expected = { source: await readFile('./fixtures/out.js', 'utf-8') };
-		const context = { url: url.toString(), format: 'module' };
-
-		const actual = await transformSource(
-			source,
-			context,
-			DEFAULT_TRANSFORM_SOURCE
-		);
-
-		expect(actual).to.deep.equal(expected);
-	});
-
-	it('defers for unsupported file', async () => {
-		const source = 'hello world';
 		const context = {
-			url: new URL('example.txt', import.meta.url).toString(),
 			format: 'module',
 		};
-		const expected = 'hello world';
+		const expected = url;
 
-		const { source: actual } = await transformSource(
-			source,
-			context,
-			DEFAULT_TRANSFORM_SOURCE
-		);
-
-		expect(actual).to.equal(expected);
-	});
-
-	it('defers for ignored file', async () => {
-		const source = 'hello world';
-		const context = {
-			url: new URL(
-				'./node_modules/@aduth/fixtures/in.jsx',
-				import.meta.url
-			).toString(),
-			format: 'module',
-		};
-		const expected = 'hello world';
-
-		const { source: actual } = await transformSource(
-			source,
-			context,
-			DEFAULT_TRANSFORM_SOURCE
-		);
+		const { source: actual } = await load(url, context, DEFAULT_LOAD);
 
 		expect(actual).to.equal(expected);
 	});

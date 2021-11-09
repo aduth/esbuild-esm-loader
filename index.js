@@ -1,4 +1,5 @@
 import { extname } from 'path';
+import { readFile } from 'fs/promises';
 import { fileURLToPath, pathToFileURL } from 'url';
 import esbuild from 'esbuild';
 import { getFilePath } from 'resolve-file-extension';
@@ -84,33 +85,20 @@ export async function resolve(specifier, context, defaultResolve) {
 
 /**
  * @param {string} url
- * @param {{}} context
- * @param {function} defaultGetFormat
+ * @param {{format: string}} context
+ * @param {function} defaultLoad
  *
- * @return {Promise<{format: string}>}
+ * @return {Promise<{source:string|SharedArrayBuffer|Uint8Array, format: string}>}
  */
-export const getFormat = (url, context, defaultGetFormat) =>
-	isTransformed(url)
-		? Promise.resolve({ format: 'module' })
-		: defaultGetFormat(url, context, defaultGetFormat);
-
-/**
- * @param {string|SharedArrayBuffer|Uint8Array} source
- * @param {{format: string, url: string}} context
- * @param {function} defaultTransformSource
- *
- * @return {Promise<{source:string|SharedArrayBuffer|Uint8Array}>}
- */
-export async function transformSource(source, context, defaultTransformSource) {
-	const { url } = context;
-
+export async function load(url, context, defaultLoad) {
 	if (isTransformed(url)) {
 		const loader = getLoader(url);
 		if (loader) {
+			const source = await readFile(fileURLToPath(url));
 			const { code } = await esbuild.transform(source.toString(), { loader });
-			return { source: code };
+			return { source: code, format: 'module' };
 		}
 	}
 
-	return defaultTransformSource(source, context, defaultTransformSource);
+	return defaultLoad(url, context, defaultLoad);
 }

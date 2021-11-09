@@ -1,3 +1,9 @@
+## v0.2.0 (Unreleased)
+
+### Breaking Changes
+
+- Update for Node v16.12 API changes (`load` replacing `getFormat`, `transformSource`)
+
 ## v0.1.1 (2021-10-03)
 
 ### Enhancements
