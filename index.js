@@ -94,8 +94,8 @@ export async function load(url, context, defaultLoad) {
 	if (isTransformed(url)) {
 		const loader = getLoader(url);
 		if (loader) {
-			const source = await readFile(fileURLToPath(url));
-			const { code } = await esbuild.transform(source.toString(), { loader });
+			const source = await readFile(fileURLToPath(url), 'utf-8');
+			const { code } = await esbuild.transform(source, { loader });
 			return { source: code, format: 'module' };
 		}
 	}
