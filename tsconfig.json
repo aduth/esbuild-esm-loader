@@ -7,7 +7,8 @@
 		"checkJs": true,
 		"noEmit": true,
 		"strictNullChecks": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"jsxFactory": "forTest"
 	},
 	"files": ["index.js", "index.test.js"]
 }

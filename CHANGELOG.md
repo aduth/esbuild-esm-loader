@@ -1,3 +1,9 @@
+## v0.2.1 (Unreleased)
+
+### Bug Fixes
+
+- TypeScript configuration files are now properly considered in transformation.
+
 ## v0.2.0 (2021-11-08)
 
 ### Breaking Changes

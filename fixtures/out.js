@@ -1,3 +1,3 @@
-import React from "react";
+import {createElement as forTest} from "react";
 import {renderToStaticMarkup} from "react-dom/server";
-console.log(renderToStaticMarkup(/* @__PURE__ */ React.createElement("div", null, "Hello World!")));
+console.log(renderToStaticMarkup(/* @__PURE__ */ forTest("div", null, "Hello World!")));

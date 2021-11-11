@@ -30,6 +30,42 @@ const IGNORED_PATH = /node_modules/;
 const isRelative = (specifier) => specifier[0] === '.';
 
 /**
+ * Returns the result of the given callback. The callback will only be called once, after which the
+ * value from the first invocation is returned.
+ *
+ * @template {(...args: any[]) => any} F
+ *
+ * @param {F} callback Original callback.
+ *
+ * @return {F} Modified callback, invoking original only once.
+ */
+function once(callback) {
+	let hasBeenCalled = false;
+	let value;
+
+	return /** @type {F} */ (
+		() => {
+			if (!hasBeenCalled) {
+				hasBeenCalled = true;
+				value = callback();
+			}
+
+			return value;
+		}
+	);
+}
+
+/**
+ * Returns the string contents of a TypeScript configuration file relative to the current working
+ * directory, or an empty string if one does not exist.
+ */
+const getTSConfigRaw = once(async () => {
+	try {
+		return await readFile('./tsconfig.json', 'utf-8');
+	} catch {}
+});
+
+/**
  * Returns true if the given URL should be subject to ESBuild transform, or
  * false otherwise.
  *
@@ -95,7 +131,8 @@ export async function load(url, context, defaultLoad) {
 		const loader = getLoader(url);
 		if (loader) {
 			const source = await readFile(fileURLToPath(url), 'utf-8');
-			const { code } = await esbuild.transform(source, { loader });
+			const tsconfigRaw = await getTSConfigRaw();
+			const { code } = await esbuild.transform(source, { loader, tsconfigRaw });
 			return { source: code, format: 'module' };
 		}
 	}
