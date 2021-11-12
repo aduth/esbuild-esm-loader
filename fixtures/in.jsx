@@ -1,4 +1,3 @@
-// MyComponent.jsx
 import { createElement as forTest } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 

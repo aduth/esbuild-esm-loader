@@ -5,7 +5,7 @@
 Using this loader will enhance the default loader behavior to allow you to transform imported files using [ESBuild](https://esbuild.github.io/), allowing for transparent imports of modern JavaScript, JSX, and TypeScript.
 
 ```js
-// MyComponent.jsx
+// index.jsx
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
@@ -13,7 +13,7 @@ console.log(renderToStaticMarkup(<div>Hello World!</div>));
 ```
 
 ```
-node --experimental-loader=esbuild-esm-loader ./MyComponent.jsx
+node --experimental-loader=esbuild-esm-loader ./index.jsx
 ```
 
 ## Installation
