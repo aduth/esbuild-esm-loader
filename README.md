@@ -18,6 +18,8 @@ node --experimental-loader=esbuild-esm-loader ./index.jsx
 
 ## Installation
 
+The current version of the library requires **Node.js v16.12 or newer**.
+
 Install as a dependency using `npm`. You will also need to install ESBuild, as it's a peer dependency of this project.
 
 ```
