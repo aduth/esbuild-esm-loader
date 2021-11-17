@@ -27,7 +27,8 @@ const IGNORED_PATH = /node_modules/;
  *
  * @return {boolean} Whether specifier is for a relative file.
  */
-const isRelative = (specifier) => specifier[0] === '.';
+export const isBareImport = (specifier) =>
+	!/^[./]|(file|node|data):/.test(specifier);
 
 /**
  * Returns the result of the given callback. The callback will only be called once, after which the
@@ -79,7 +80,7 @@ function isTransformed(specifier) {
 	}
 
 	const ext = extname(specifier);
-	return ext ? TRANSFORMED_EXTENSIONS.includes(ext) : isRelative(specifier);
+	return ext ? TRANSFORMED_EXTENSIONS.includes(ext) : !isBareImport(specifier);
 }
 
 /**

@@ -1,6 +1,50 @@
 import { readFile } from 'fs/promises';
 import { expect } from 'chai';
-import { getLoader, resolve, load } from './index.js';
+import { isBareImport, getLoader, resolve, load } from './index.js';
+
+describe('isBareImport', () => {
+	it('returns true for bare import', () => {
+		const result = isBareImport('esbuild-esm-loader');
+
+		expect(result).to.be.true;
+	});
+
+	it('returns false for same-directory import', () => {
+		const result = isBareImport('./foo');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for parent-directory import', () => {
+		const result = isBareImport('../foo');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for root-directory import', () => {
+		const result = isBareImport('/foo');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for file: import', () => {
+		const result = isBareImport('file:foo');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for data: import', () => {
+		const result = isBareImport('data:foo');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for node: import', () => {
+		const result = isBareImport('node:foo');
+
+		expect(result).to.be.false;
+	});
+});
 
 describe('getLoader', () => {
 	it('returns loader', () => {
