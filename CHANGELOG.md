@@ -1,4 +1,4 @@
-## V0.2.2 (Unreleased)
+## V0.2.2 (2021-11-16)
 
 ### Enhancements
 
