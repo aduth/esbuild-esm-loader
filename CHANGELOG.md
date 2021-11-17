@@ -1,3 +1,9 @@
+## V0.2.2 (Unreleased)
+
+### Enhancements
+
+- The required Node.js version of >=16.12 is now enforced by `package.json` `engines` field and better documented in the README.
+
 ## v0.2.1 (2021-11-11)
 
 ### Bug Fixes

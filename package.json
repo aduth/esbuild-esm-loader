@@ -4,6 +4,9 @@
 	"version": "0.2.1",
 	"description": "ESM loader to transform imports using ESBuild",
 	"license": "MIT",
+	"engines": {
+		"node": ">=16.12.0"
+	},
 	"main": "index.js",
 	"scripts": {
 		"test": "run-p test:*",
