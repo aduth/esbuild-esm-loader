@@ -4,6 +4,10 @@
 
 - Fixed an issue where file names with multiple dots (e.g. `example.config.js`) would be resolved incorrectly.
 
+### Documentation
+
+- Added "Configuration" section to the documentation, explaining configurability.
+
 ## v0.2.2 (2021-11-16)
 
 ### Enhancements

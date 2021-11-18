@@ -34,6 +34,10 @@ Loaders can be defined as an argument when running `node`.
 node --experimental-loader=esbuild-esm-loader entry.js
 ```
 
+## Configuration
+
+If present, a `tsconfig.json` will be read and provided to ESBuild as the [`tsconfigRaw` option](https://esbuild.github.io/api/#tsconfig-raw). You can use this to control behavior such as JSX pragma with TypeScript's [`jsxFactory` configuration option](https://www.typescriptlang.org/tsconfig#jsxFactory). This applies even if you are not using TypeScript.
+
 ## Versioning
 
 This project follows [Semantic Versioning](https://semver.org/).
