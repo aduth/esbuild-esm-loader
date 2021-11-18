@@ -1,7 +1,7 @@
 {
 	"name": "esbuild-esm-loader",
 	"type": "module",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"description": "ESM loader to transform imports using ESBuild",
 	"license": "MIT",
 	"engines": {

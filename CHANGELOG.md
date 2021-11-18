@@ -1,4 +1,4 @@
-## v0.2.3 (Unreleased)
+## v0.2.3 (2021-11-17)
 
 ### Bug Fixes
 
