@@ -1,1 +1,1 @@
-export const bar = () => {};
+export { bar } from './c.d';

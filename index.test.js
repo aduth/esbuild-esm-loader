@@ -1,6 +1,14 @@
 import { readFile } from 'fs/promises';
 import { expect } from 'chai';
-import { isBareImport, getLoader, resolve, load } from './index.js';
+import {
+	isBareImport,
+	isTransformCandidate,
+	isTransformedExtension,
+	isTransformed,
+	getLoader,
+	resolve,
+	load,
+} from './index.js';
 
 describe('isBareImport', () => {
 	it('returns true for bare import', () => {
@@ -46,6 +54,80 @@ describe('isBareImport', () => {
 	});
 });
 
+describe('isTransformCandidate', () => {
+	it('returns false for bare import', () => {
+		const result = isTransformCandidate('esbuild-esm-loader');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for node modules path', () => {
+		const result = isTransformCandidate(
+			'../node_modules/esbuild-esm-loader/index.js'
+		);
+
+		expect(result).to.be.false;
+	});
+
+	it('returns true for extensionless valid candidate, e.g. relative import', () => {
+		const result = isTransformCandidate('./esbuild-esm-loader');
+
+		expect(result).to.be.true;
+	});
+
+	it('returns true for valid candidate with extension, e.g. relative import', () => {
+		const result = isTransformCandidate('./esbuild-esm-loader.js');
+
+		expect(result).to.be.true;
+	});
+});
+
+describe('isTransformedExtension', () => {
+	it('returns false for unsupported path extension', () => {
+		const result = isTransformedExtension('example.txt');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns true for supported path extension', () => {
+		const result = isTransformedExtension('example.js');
+
+		expect(result).to.be.true;
+	});
+
+	it('returns true for supported path with multiple dots', () => {
+		const result = isTransformedExtension('example.config.js');
+
+		expect(result).to.be.true;
+	});
+});
+
+describe('isTransformed', () => {
+	it('returns false for bare import', () => {
+		const result = isTransformed('esbuild-esm-loader');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for node modules path', () => {
+		const result = isTransformed('../node_modules/esbuild-esm-loader/index.js');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns false for extensionless relative import', () => {
+		const result = isTransformed('./esbuild-esm-loader');
+
+		expect(result).to.be.false;
+	});
+
+	it('returns true for valid candidate with extension, e.g. relative import', () => {
+		const result = isTransformed('./esbuild-esm-loader.js');
+
+		expect(result).to.be.true;
+	});
+});
+
 describe('getLoader', () => {
 	it('returns loader', () => {
 		const result = getLoader('file:///foo/bar.tsx');
@@ -83,7 +165,7 @@ describe('resolve', () => {
 	});
 
 	it('defers for unsupported file', async () => {
-		const specifier = './fixtures/in.txt';
+		const specifier = './LICENSE.md';
 		const context = { conditions: [], parentURL: import.meta.url };
 		const expected = DEFAULT_RESOLVED;
 
@@ -120,7 +202,7 @@ describe('load', () => {
 	});
 
 	it('defers for unsupported file', async () => {
-		const url = new URL('example.txt', import.meta.url).toString();
+		const url = new URL('LICENSE.md', import.meta.url).toString();
 		const context = {
 			format: 'module',
 		};

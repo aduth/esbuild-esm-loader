@@ -67,6 +67,31 @@ const getTSConfigRaw = once(async () => {
 });
 
 /**
+ * Returns true if the given URL may be a candidate for transformation, or
+ * false otherwise. A candidate for transformation is one which is not a
+ * reference to a dependency.
+ *
+ * @param {string} specifier URL to test.
+ *
+ * @return {boolean} Whether to transform.
+ */
+export function isTransformCandidate(specifier) {
+	return !IGNORED_PATH.test(specifier) && !isBareImport(specifier);
+}
+
+/**
+ * Returns true if the given specifier has an extension which is subject to
+ * transformation, or false otherwise.
+ *
+ * @param {string} specifier URL to test.
+ *
+ * @return {boolean} Whether to transform.
+ */
+export function isTransformedExtension(specifier) {
+	return TRANSFORMED_EXTENSIONS.includes(extname(specifier));
+}
+
+/**
  * Returns true if the given URL should be subject to ESBuild transform, or
  * false otherwise.
  *
@@ -74,13 +99,8 @@ const getTSConfigRaw = once(async () => {
  *
  * @return {boolean} Whether to transform.
  */
-function isTransformed(specifier) {
-	if (IGNORED_PATH.test(specifier)) {
-		return false;
-	}
-
-	const ext = extname(specifier);
-	return ext ? TRANSFORMED_EXTENSIONS.includes(ext) : !isBareImport(specifier);
+export function isTransformed(specifier) {
+	return isTransformCandidate(specifier) && isTransformedExtension(specifier);
 }
 
 /**
@@ -101,20 +121,20 @@ export const getLoader = (url) =>
  * @return {Promise<{url: string}>}
  */
 export async function resolve(specifier, context, defaultResolve) {
-	if (isTransformed(specifier)) {
-		let url = new URL(specifier, context.parentURL);
-		if (!extname(specifier)) {
-			const resolvedFile = await getFilePath(
-				fileURLToPath(url),
-				TRANSFORMED_EXTENSIONS
-			);
-
-			if (resolvedFile) {
-				url = pathToFileURL(resolvedFile);
-			}
+	if (isTransformCandidate(specifier)) {
+		const url = new URL(specifier, context.parentURL);
+		if (isTransformedExtension(specifier)) {
+			return { url: url.href };
 		}
 
-		return { url: url.href };
+		const resolvedFile = await getFilePath(
+			fileURLToPath(url),
+			TRANSFORMED_EXTENSIONS
+		);
+
+		if (resolvedFile) {
+			return { url: pathToFileURL(resolvedFile).href };
+		}
 	}
 
 	return defaultResolve(specifier, context, defaultResolve);

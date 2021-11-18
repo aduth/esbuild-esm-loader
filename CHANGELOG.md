@@ -1,3 +1,9 @@
+## v0.2.3 (Unreleased)
+
+### Bug Fixes
+
+- Fixed an issue where file names with multiple dots (e.g. `example.config.js`) would be resolved incorrectly.
+
 ## v0.2.2 (2021-11-16)
 
 ### Enhancements
