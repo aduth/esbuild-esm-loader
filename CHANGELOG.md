@@ -1,12 +1,16 @@
-## V0.2.2 (2021-11-16)
+## v0.2.2 (2021-11-16)
 
 ### Enhancements
 
-- The required Node.js version of >=16.12 is now enforced by `package.json` `engines` field and better documented in the README.
+- The required Node.js version of >=16.12 is now enforced by `package.json` `engines` field.
 
 ### Bug Fixes
 
 - Improved detection of module resolution for non-bare imports (e.g. root-relative paths, or `file:` paths)
+
+### Documentation
+
+- The required Node.js version of >=16.12 is now documented in the README.
 
 ## v0.2.1 (2021-11-11)
 
