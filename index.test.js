@@ -145,6 +145,7 @@ describe('resolve', () => {
 		const context = { conditions: [], parentURL: import.meta.url };
 		const expected = {
 			url: new URL('./fixtures/in.jsx', import.meta.url).toString(),
+			shortCircuit: true,
 		};
 
 		const actual = await resolve(specifier, context, DEFAULT_RESOLVE);
@@ -157,6 +158,7 @@ describe('resolve', () => {
 		const context = { conditions: [], parentURL: import.meta.url };
 		const expected = {
 			url: new URL('./fixtures/in.jsx', import.meta.url).toString(),
+			shortCircuit: true,
 		};
 
 		const actual = await resolve(specifier, context, DEFAULT_RESOLVE);
@@ -193,6 +195,7 @@ describe('load', () => {
 		const expected = {
 			source: await readFile('./fixtures/out.js', 'utf-8'),
 			format: 'module',
+			shortCircuit: true,
 		};
 		const context = { format: 'module' };
 

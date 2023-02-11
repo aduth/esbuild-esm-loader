@@ -1,3 +1,9 @@
+## v0.3.0 (Unreleased)
+
+### Breaking Changes
+
+- Update for Node v16.17 API changes, resolveing error about missing `shortCircuit`.
+
 ## v0.2.3 (2021-11-17)
 
 ### Bug Fixes

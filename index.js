@@ -118,13 +118,13 @@ export const getLoader = (url) =>
  * @param {{conditions: string[], parentURL?: string}} context
  * @param {function} defaultResolve
  *
- * @return {Promise<{url: string}>}
+ * @return {Promise<{url: string, shortCircuit?: boolean}>}
  */
 export async function resolve(specifier, context, defaultResolve) {
 	if (isTransformCandidate(specifier)) {
 		const url = new URL(specifier, context.parentURL);
 		if (isTransformedExtension(specifier)) {
-			return { url: url.href };
+			return { url: url.href, shortCircuit: true };
 		}
 
 		const resolvedFile = await getFilePath(
@@ -133,7 +133,7 @@ export async function resolve(specifier, context, defaultResolve) {
 		);
 
 		if (resolvedFile) {
-			return { url: pathToFileURL(resolvedFile).href };
+			return { url: pathToFileURL(resolvedFile).href, shortCircuit: true };
 		}
 	}
 
@@ -145,7 +145,7 @@ export async function resolve(specifier, context, defaultResolve) {
  * @param {{format: string}} context
  * @param {function} defaultLoad
  *
- * @return {Promise<{source:string|SharedArrayBuffer|Uint8Array, format: string}>}
+ * @return {Promise<{source:string|SharedArrayBuffer|Uint8Array, format: string, shortCircuit?: boolean}>}
  */
 export async function load(url, context, defaultLoad) {
 	if (isTransformed(url)) {
@@ -154,7 +154,7 @@ export async function load(url, context, defaultLoad) {
 			const source = await readFile(fileURLToPath(url), 'utf-8');
 			const tsconfigRaw = await getTSConfigRaw();
 			const { code } = await esbuild.transform(source, { loader, tsconfigRaw });
-			return { source: code, format: 'module' };
+			return { source: code, format: 'module', shortCircuit: true };
 		}
 	}
 

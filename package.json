@@ -5,7 +5,7 @@
 	"description": "ESM loader to transform imports using ESBuild",
 	"license": "MIT",
 	"engines": {
-		"node": ">=16.12.0"
+		"node": ">=16.17.0"
 	},
 	"main": "index.js",
 	"scripts": {
