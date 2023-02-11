@@ -1,4 +1,4 @@
-## v0.3.0 (Unreleased)
+## v0.3.0 (2023-02-11)
 
 ### Breaking Changes
 
