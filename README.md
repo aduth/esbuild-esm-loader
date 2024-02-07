@@ -48,6 +48,6 @@ Versioning will proceed from 1.0.0 once the feature stabilizes in Node.js.
 
 ## License
 
-Copyright 2021 Andrew Duthie
+Copyright 2024 Andrew Duthie
 
 Released under the MIT License. See [LICENSE.md](./LICENSE.md).
