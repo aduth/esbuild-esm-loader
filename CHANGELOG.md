@@ -1,3 +1,9 @@
+## Unreleased
+
+### Bug Fixes
+
+- Fix error "The URL must be of scheme file" in newer versions of Node.js
+
 ## v0.3.0 (2023-02-11)
 
 ### Breaking Changes

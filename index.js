@@ -123,7 +123,7 @@ export const getLoader = (url) =>
 export async function resolve(specifier, context, defaultResolve) {
 	if (isTransformCandidate(specifier)) {
 		const url = new URL(specifier, context.parentURL);
-		if (isTransformedExtension(specifier)) {
+		if (url.protocol !== 'file:' || isTransformedExtension(specifier)) {
 			return { url: url.href, shortCircuit: true };
 		}
 
