@@ -1,6 +1,6 @@
-import { extname } from 'path';
-import { readFile } from 'fs/promises';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { extname } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import esbuild from 'esbuild';
 import { getFilePath } from 'resolve-file-extension';
 
