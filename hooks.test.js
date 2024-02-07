@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
+import assert from 'node:assert';
 import { readFile } from 'node:fs/promises';
-import { expect } from 'chai';
 import {
 	isBareImport,
 	isTransformCandidate,
@@ -15,43 +15,43 @@ describe('isBareImport', () => {
 	it('returns true for bare import', () => {
 		const result = isBareImport('esbuild-esm-loader');
 
-		expect(result).to.be.true;
+		assert.strictEqual(result, true);
 	});
 
 	it('returns false for same-directory import', () => {
 		const result = isBareImport('./foo');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for parent-directory import', () => {
 		const result = isBareImport('../foo');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for root-directory import', () => {
 		const result = isBareImport('/foo');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for file: import', () => {
 		const result = isBareImport('file:foo');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for data: import', () => {
 		const result = isBareImport('data:foo');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for node: import', () => {
 		const result = isBareImport('node:foo');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 });
 
@@ -59,7 +59,7 @@ describe('isTransformCandidate', () => {
 	it('returns false for bare import', () => {
 		const result = isTransformCandidate('esbuild-esm-loader');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for node modules path', () => {
@@ -67,19 +67,19 @@ describe('isTransformCandidate', () => {
 			'../node_modules/esbuild-esm-loader/hooks.js',
 		);
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns true for extensionless valid candidate, e.g. relative import', () => {
 		const result = isTransformCandidate('./esbuild-esm-loader');
 
-		expect(result).to.be.true;
+		assert.strictEqual(result, true);
 	});
 
 	it('returns true for valid candidate with extension, e.g. relative import', () => {
 		const result = isTransformCandidate('./esbuild-esm-loader.js');
 
-		expect(result).to.be.true;
+		assert.strictEqual(result, true);
 	});
 });
 
@@ -87,19 +87,19 @@ describe('isTransformedExtension', () => {
 	it('returns false for unsupported path extension', () => {
 		const result = isTransformedExtension('example.txt');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns true for supported path extension', () => {
 		const result = isTransformedExtension('example.js');
 
-		expect(result).to.be.true;
+		assert.strictEqual(result, true);
 	});
 
 	it('returns true for supported path with multiple dots', () => {
 		const result = isTransformedExtension('example.config.js');
 
-		expect(result).to.be.true;
+		assert.strictEqual(result, true);
 	});
 });
 
@@ -107,25 +107,25 @@ describe('isTransformed', () => {
 	it('returns false for bare import', () => {
 		const result = isTransformed('esbuild-esm-loader');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for node modules path', () => {
 		const result = isTransformed('../node_modules/esbuild-esm-loader/hooks.js');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns false for extensionless relative import', () => {
 		const result = isTransformed('./esbuild-esm-loader');
 
-		expect(result).to.be.false;
+		assert.strictEqual(result, false);
 	});
 
 	it('returns true for valid candidate with extension, e.g. relative import', () => {
 		const result = isTransformed('./esbuild-esm-loader.js');
 
-		expect(result).to.be.true;
+		assert.strictEqual(result, true);
 	});
 });
 
@@ -133,7 +133,7 @@ describe('getLoader', () => {
 	it('returns loader', () => {
 		const result = getLoader('file:///foo/bar.tsx');
 
-		expect(result).to.equal('tsx');
+		assert.strictEqual(result, 'tsx');
 	});
 });
 
@@ -151,7 +151,7 @@ describe('resolve', () => {
 
 		const actual = await resolve(specifier, context, DEFAULT_RESOLVE);
 
-		expect(actual).to.deep.equal(expected);
+		assert.deepStrictEqual(actual, expected);
 	});
 
 	it('resolves url for extensionless file', async () => {
@@ -164,7 +164,7 @@ describe('resolve', () => {
 
 		const actual = await resolve(specifier, context, DEFAULT_RESOLVE);
 
-		expect(actual).to.deep.equal(expected);
+		assert.deepStrictEqual(actual, expected);
 	});
 
 	it('defers for unsupported file', async () => {
@@ -174,7 +174,7 @@ describe('resolve', () => {
 
 		const actual = await resolve(specifier, context, DEFAULT_RESOLVE);
 
-		expect(actual).to.deep.equal(expected);
+		assert.deepStrictEqual(actual, expected);
 	});
 
 	it('defers for ignored file', async () => {
@@ -184,7 +184,7 @@ describe('resolve', () => {
 
 		const actual = await resolve(specifier, context, DEFAULT_RESOLVE);
 
-		expect(actual).to.deep.equal(expected);
+		assert.deepStrictEqual(actual, expected);
 	});
 });
 
@@ -202,7 +202,7 @@ describe('load', () => {
 
 		const actual = await load(url, context, DEFAULT_LOAD);
 
-		expect(actual).to.deep.equal(expected);
+		assert.deepStrictEqual(actual, expected);
 	});
 
 	it('defers for unsupported file', async () => {
@@ -214,7 +214,7 @@ describe('load', () => {
 
 		const { source: actual } = await load(url, context, DEFAULT_LOAD);
 
-		expect(actual).to.equal(expected);
+		assert.strictEqual(actual, expected);
 	});
 
 	it('defers for ignored file', async () => {
@@ -229,6 +229,6 @@ describe('load', () => {
 
 		const { source: actual } = await load(url, context, DEFAULT_LOAD);
 
-		expect(actual).to.equal(expected);
+		assert.strictEqual(actual, expected);
 	});
 });
