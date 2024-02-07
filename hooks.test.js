@@ -8,7 +8,7 @@ import {
 	getLoader,
 	resolve,
 	load,
-} from './index.js';
+} from './hooks.js';
 
 describe('isBareImport', () => {
 	it('returns true for bare import', () => {
@@ -63,7 +63,7 @@ describe('isTransformCandidate', () => {
 
 	it('returns false for node modules path', () => {
 		const result = isTransformCandidate(
-			'../node_modules/esbuild-esm-loader/index.js',
+			'../node_modules/esbuild-esm-loader/hooks.js',
 		);
 
 		expect(result).to.be.false;
@@ -110,7 +110,7 @@ describe('isTransformed', () => {
 	});
 
 	it('returns false for node modules path', () => {
-		const result = isTransformed('../node_modules/esbuild-esm-loader/index.js');
+		const result = isTransformed('../node_modules/esbuild-esm-loader/hooks.js');
 
 		expect(result).to.be.false;
 	});

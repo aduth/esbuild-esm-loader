@@ -7,10 +7,12 @@
 	"engines": {
 		"node": ">=16.17.0"
 	},
-	"main": "index.js",
+	"exports": {
+		".": "./hooks.js"
+	},
 	"scripts": {
 		"test": "run-p test:*",
-		"test:loader": "node --experimental-loader=./index.js fixtures/extensionless/entry.js",
+		"test:loader": "node --experimental-loader=./hooks.js fixtures/extensionless/entry.js",
 		"test:lint": "eslint *.js",
 		"test:types": "tsc",
 		"test:unit": "mocha *.test.js"
@@ -30,7 +32,7 @@
 		"url": "https://github.com/aduth/esbuild-esm-loader.git"
 	},
 	"files": [
-		"index.js"
+		"hooks.js"
 	],
 	"peerDependencies": {
 		"esbuild": "*"
