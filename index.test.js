@@ -63,7 +63,7 @@ describe('isTransformCandidate', () => {
 
 	it('returns false for node modules path', () => {
 		const result = isTransformCandidate(
-			'../node_modules/esbuild-esm-loader/index.js'
+			'../node_modules/esbuild-esm-loader/index.js',
 		);
 
 		expect(result).to.be.false;
@@ -219,7 +219,7 @@ describe('load', () => {
 	it('defers for ignored file', async () => {
 		const url = new URL(
 			'./node_modules/@aduth/fixtures/in.jsx',
-			import.meta.url
+			import.meta.url,
 		).toString();
 		const context = {
 			format: 'module',

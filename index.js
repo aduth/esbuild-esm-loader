@@ -129,7 +129,7 @@ export async function resolve(specifier, context, defaultResolve) {
 
 		const resolvedFile = await getFilePath(
 			fileURLToPath(url),
-			TRANSFORMED_EXTENSIONS
+			TRANSFORMED_EXTENSIONS,
 		);
 
 		if (resolvedFile) {
