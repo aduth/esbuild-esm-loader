@@ -13,7 +13,7 @@ console.log(renderToStaticMarkup(<div>Hello World!</div>));
 ```
 
 ```
-node --experimental-loader=esbuild-esm-loader ./index.jsx
+node --import=esbuild-esm-loader/register ./index.jsx
 ```
 
 ## Installation
@@ -31,7 +31,7 @@ npm install esbuild esbuild-esm-loader
 Loaders can be defined as an argument when running `node`.
 
 ```
-node --experimental-loader=esbuild-esm-loader entry.js
+node --import=esbuild-esm-loader/register entry.js
 ```
 
 ## Configuration

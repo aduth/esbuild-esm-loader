@@ -1,14 +1,20 @@
 ## Unreleased
 
+### New Features
+
+- Add support for `--import` usage as alternative to deprecated `--loader` flag, available in Node.js v20.6.0 and newer.
+  - Before: `node --loader=esbuild-esm-loader ./index.jsx`
+  - After: `node --import=esbuild-esm-loader/register ./index.jsx`
+
 ### Bug Fixes
 
-- Fix error "The URL must be of scheme file" in newer versions of Node.js
+- Fix error "The URL must be of scheme file" in newer versions of Node.js.
 
 ## v0.3.0 (2023-02-11)
 
 ### Breaking Changes
 
-- Update for Node v16.17 API changes, resolveing error about missing `shortCircuit`.
+- Update for Node v16.17 API changes, resolving error for missing `shortCircuit`.
 
 ## v0.2.3 (2021-11-17)
 
