@@ -3,6 +3,7 @@
 ### Bug Fixes
 
 - Fix handling import specifiers including query parameters.
+- Avoid trying to process `data:` or `node:` import specifiers.
 
 ## v0.3.1 (2024-02-06)
 

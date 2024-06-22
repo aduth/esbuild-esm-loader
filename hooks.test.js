@@ -43,16 +43,16 @@ describe('isBareImport', () => {
 		assert.strictEqual(result, false);
 	});
 
-	it('returns false for data: import', () => {
+	it('returns true for data: import', () => {
 		const result = isBareImport('data:foo');
 
-		assert.strictEqual(result, false);
+		assert.strictEqual(result, true);
 	});
 
-	it('returns false for node: import', () => {
+	it('returns true for node: import', () => {
 		const result = isBareImport('node:foo');
 
-		assert.strictEqual(result, false);
+		assert.strictEqual(result, true);
 	});
 });
 

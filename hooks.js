@@ -27,8 +27,7 @@ const IGNORED_PATH = /node_modules/;
  *
  * @return {boolean} Whether specifier is for a relative file.
  */
-export const isBareImport = (specifier) =>
-	!/^[./]|(file|node|data):/.test(specifier);
+export const isBareImport = (specifier) => !/^[./]|file:/.test(specifier);
 
 /**
  * Returns the result of the given callback. The callback will only be called once, after which the
