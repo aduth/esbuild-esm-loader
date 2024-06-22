@@ -13,7 +13,9 @@
 	},
 	"scripts": {
 		"test": "run-p test:*",
-		"test:loader": "node --import=./register.js fixtures/extensionless/entry.js",
+		"test:loader:extensionless": "node --import=./register.js fixtures/extensionless/entry.js",
+		"test:loader:extensioned": "node --import=./register.js fixtures/extensioned/index.js",
+		"test:loader": "run-p test:loader:*",
 		"test:lint": "eslint *.js",
 		"test:types": "tsc",
 		"test:unit": "node --test *.test.js"
