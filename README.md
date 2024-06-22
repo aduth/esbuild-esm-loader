@@ -4,7 +4,7 @@
 
 Using this loader will enhance the default loader behavior to allow you to transform imported files using [ESBuild](https://esbuild.github.io/), allowing for transparent imports of modern JavaScript, JSX, and TypeScript.
 
-```js
+```tsx
 // index.tsx
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
