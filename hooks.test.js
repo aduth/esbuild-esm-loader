@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { readFile } from 'node:fs/promises';
 import {
 	isBareImport,
+	getFilePathBase,
 	isTransformCandidate,
 	isTransformedExtension,
 	isTransformed,
@@ -52,6 +53,14 @@ describe('isBareImport', () => {
 		const result = isBareImport('node:foo');
 
 		assert.strictEqual(result, false);
+	});
+});
+
+describe('getFilePathBase', () => {
+	it('returns path without search fragment', () => {
+		const result = getFilePathBase('example.txt?s');
+
+		assert.strictEqual(result, 'example.txt');
 	});
 });
 

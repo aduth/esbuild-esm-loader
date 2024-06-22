@@ -1,3 +1,9 @@
+## Unreleased
+
+### Bug Fixes
+
+- Fix handling import specifiers including query parameters.
+
 ## v0.3.1 (2024-02-06)
 
 ### New Features

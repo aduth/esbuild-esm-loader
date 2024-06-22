@@ -80,6 +80,16 @@ export function isTransformCandidate(specifier) {
 }
 
 /**
+ * Returns the base file path of a given path. If the path includes query parameters, the return
+ * value is the path before the search fragment.
+ *
+ * @param {string} path Original path.
+ *
+ * @return {string} Path without search fragment.
+ */
+export const getFilePathBase = (path) => path.split('?')[0];
+
+/**
  * Returns true if the given specifier has an extension which is subject to
  * transformation, or false otherwise.
  *
@@ -88,7 +98,7 @@ export function isTransformCandidate(specifier) {
  * @return {boolean} Whether to transform.
  */
 export function isTransformedExtension(specifier) {
-	return TRANSFORMED_EXTENSIONS.includes(extname(specifier));
+	return TRANSFORMED_EXTENSIONS.includes(extname(getFilePathBase(specifier)));
 }
 
 /**
@@ -111,7 +121,7 @@ export function isTransformed(specifier) {
  * @return {esbuild.Loader=} Loader to use.
  */
 export const getLoader = (url) =>
-	/** @type {SupportedLoader} */ (extname(url).slice(1));
+	/** @type {SupportedLoader} */ (extname(getFilePathBase(url)).slice(1));
 
 /**
  * @param {string} specifier
