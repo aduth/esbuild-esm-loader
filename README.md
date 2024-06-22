@@ -1,6 +1,6 @@
 # ESBuild ESM Loader
 
-**ESBuild ESM Loader** is a custom resolver implementation for the [experimental module customization hooks](https://nodejs.org/docs/latest/api/module.html#customization-hooks) feature of Node.js ECMAScript modules.
+**ESBuild ESM Loader** is a custom resolver implementation for the [module customization hooks](https://nodejs.org/docs/latest/api/module.html#customization-hooks) feature of Node.js ECMAScript modules.
 
 Using this loader will enhance the default loader behavior to allow you to transform imported files using [ESBuild](https://esbuild.github.io/), allowing for transparent imports of modern JavaScript, JSX, and TypeScript.
 
