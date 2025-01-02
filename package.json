@@ -17,6 +17,8 @@
 		"test:loader:extensionless": "node --import=./register.js fixtures/extensionless/entry.js",
 		"test:loader:file-url": "node --import=./register.js fixtures/file-url/index.js",
 		"test:loader:params": "node --import=./register.js fixtures/params/index.js",
+		"test:loader:sourcemaps": "node --import=./register.js fixtures/sourcemaps/index.ts",
+		"test:loader:sourcemaps-enabled": "node --enable-source-maps --import=./register.js fixtures/sourcemaps/index.ts",
 		"test:loader": "run-p test:loader:*",
 		"test:lint": "eslint *.js",
 		"test:types": "tsc",

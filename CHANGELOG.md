@@ -1,3 +1,9 @@
+## v0.3.3 (2025-01-02)
+
+### New Features
+
+- Add support for [Node.js native source maps](https://nodejs.org/api/module.html#source-map-v3-support) when source maps are enabled using the `--enable-source-maps` flag.
+
 ## v0.3.2 (2024-06-22)
 
 ### Bug Fixes

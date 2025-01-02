@@ -1,4 +1,4 @@
-import { extname } from 'node:path';
+import { extname, basename } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import esbuild from 'esbuild';
@@ -162,7 +162,18 @@ export async function load(url, context, defaultLoad) {
 		if (loader) {
 			const source = await readFile(fileURLToPath(url), 'utf-8');
 			const tsconfigRaw = await getTSConfigRaw();
-			const { code } = await esbuild.transform(source, { loader, tsconfigRaw });
+
+			/** @type {Partial<import('esbuild').TransformOptions>=} */
+			const transformOptions = { loader, tsconfigRaw };
+			if (process.sourceMapsEnabled) {
+				Object.assign(transformOptions, {
+					sourcemap: 'inline',
+					sourcefile: basename(url),
+					sourcesContent: false,
+				});
+			}
+
+			const { code } = await esbuild.transform(source, transformOptions);
 			return { source: code, format: 'module', shortCircuit: true };
 		}
 	}
