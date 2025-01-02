@@ -34,6 +34,12 @@ Loaders can be defined as an argument when running `node`.
 node --import=esbuild-esm-loader/register entry.js
 ```
 
+For better error stack traces, this loader supports [Node.js's native sourcemap support](https://nodejs.org/api/module.html#source-map-v3-support), which can be enabled by passing the `--enable-source-maps` flag.
+
+```
+node --enable-source-maps --import=esbuild-esm-loader/register entry.js
+```
+
 ## Configuration
 
 If present, a `tsconfig.json` will be read and provided to ESBuild as the [`tsconfigRaw` option](https://esbuild.github.io/api/#tsconfig-raw). You can use this to control behavior such as JSX pragma with TypeScript's [`jsxFactory` configuration option](https://www.typescriptlang.org/tsconfig#jsxFactory). This applies even if you are not using TypeScript.
