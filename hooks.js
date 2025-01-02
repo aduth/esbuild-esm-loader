@@ -166,11 +166,9 @@ export async function load(url, context, defaultLoad) {
 			/** @type {Partial<import('esbuild').TransformOptions>=} */
 			const transformOptions = { loader, tsconfigRaw };
 			if (process.sourceMapsEnabled) {
-				Object.assign(transformOptions, {
-					sourcemap: 'inline',
-					sourcefile: basename(url),
-					sourcesContent: false,
-				});
+				transformOptions.sourcemap = 'inline';
+				transformOptions.sourcefile = basename(url);
+				transformOptions.sourcesContent = false;
 			}
 
 			const { code } = await esbuild.transform(source, transformOptions);
